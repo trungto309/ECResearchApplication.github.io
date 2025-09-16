@@ -1,19 +1,111 @@
 <!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
-		<title>My static Space</title>
-		<link rel="stylesheet" href="style.css" />
-	</head>
-	<body>
-		<div class="card">
-			<h1>Welcome to your static Space!</h1>
-			<p>You can modify this app directly by editing <i>index.html</i> in the Files and versions tab.</p>
-			<p>
-				Also don't forget to check the
-				<a href="https://huggingface.co/docs/hub/spaces" target="_blank">Spaces documentation</a>.
-			</p>
-		</div>
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>My static Space</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 40px;
+        background: #f9f9f9;
+      }
+      .card {
+        background: #fff;
+        padding: 20px;
+        margin-bottom: 30px;
+        border-radius: 8px;
+        box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+      }
+      #chartContainer {
+        width: 80%;
+        margin: auto;
+      }
+      #insights {
+        margin-top: 30px;
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0px 2px 6px rgba(0,0,0,0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Welcome Section -->
+    <div class="card">
+      <h1>Welcome to your static Space!</h1>
+      <p>You can modify this app directly by editing <i>index.html</i> in the Files and versions tab.</p>
+      <p>
+        Also don't forget to check the
+        <a href="https://huggingface.co/docs/hub/spaces" target="_blank">Spaces documentation</a>.
+      </p>
+    </div>
+
+    <!-- Chart Section -->
+    <div class="card">
+      <h2>Decade-wise Research Studies</h2>
+      <div id="chartContainer">
+        <canvas id="decadePie"></canvas>
+      </div>
+    </div>
+
+    <!-- Insights Section -->
+    <div id="insights">
+      <h2>Insights</h2>
+      <ul id="insightList"></ul>
+    </div>
+
+    <script>
+      // Decade aggregation from your data
+      const dataByDecade = {
+        "1990s": 331+68+179+0+10+0+54 + 400+72+172+0+13+0+66 + 467+94+205+0+19+0+84 + 535+180+252+0+35+0+129 + 674+223+298+0+68+0+197,
+        "2000s": 806+257+417+2+93+0+281 + 924+307+466+2+101+0+348 + 1110+354+464+5+102+0+422 + 1420+471+553+7+133+0+551 + 1870+529+650+12+166+0+697 + 2120+633+750+18+171+0+799 + 2230+859+919+18+209+0+892 + 2520+1020+1230+16+272+3+1100 + 2860+1200+1650+24+360+5+1330 + 3300+1420+1960+35+450+4+1540,
+        "2010s": 3630+1580+2120+31+495+5+1770 + 3930+1780+2350+37+525+5+1970 + 4510+2080+2590+53+498+4+2220 + 4830+2270+2660+52+460+3+2510 + 4990+2440+2770+43+473+3+2770 + 5320+2520+2890+45+465+4+2990 + 5500+2650+2900+48+378+6+3060 + 5870+2880+2930+58+345+12+3210 + 6200+3010+3020+56+361+18+3450 + 6310+3180+3120+61+378+40+3680,
+        "2020s": 6790+3500+3410+99+413+89+4150 + 7280+3790+3930+124+534+159+4680 + 7430+3750+4120+144+719+210+4890 + 7750+3160+4250+158+868+235+5130 + 3400+3360+3560+167+868+245+4690
+      };
+
+      const labels = Object.keys(dataByDecade);
+      const values = Object.values(dataByDecade);
+
+      // Chart.js Pie
+      const ctx = document.getElementById('decadePie').getContext('2d');
+      new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Studies',
+            data: values,
+            backgroundColor: ['#4CAF50','#2196F3','#FFC107','#E91E63']
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: 'bottom' }
+          }
+        }
+      });
+
+      // Generate Insights
+      const insightList = document.getElementById('insightList');
+      const maxDecade = labels[values.indexOf(Math.max(...values))];
+      const minDecade = labels[values.indexOf(Math.min(...values))];
+
+      const insights = [
+        `The decade with the highest number of studies is the <b>${maxDecade}</b>.`,
+        `The decade with the lowest research output is the <b>${minDecade}</b>.`,
+        `There is a clear growth trend from the 1990s to the 2020s, showing how research activity expanded rapidly.`,
+        `The 2020s already show very high activity despite being only halfway through the decade.`
+      ];
+
+      insights.forEach(i => {
+        const li = document.createElement('li');
+        li.innerHTML = i;
+        insightList.appendChild(li);
+      });
+    </script>
+  </body>
 </html>
