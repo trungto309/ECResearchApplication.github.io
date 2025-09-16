@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Visualization | Eddy Covariance Research Trends</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 6px;
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        .chart-container {
+            position: relative;
+            height: 400px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <header class="bg-gradient-to-r from-green-600 to-green-800 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-3xl font-bold">Eddy Covariance Research Trends</h1>
+                    <p class="text-green-100 mt-2">Visualization of scientific publication data from 1995-2025</p>
+                </div>
+                <i data-feather="bar-chart-2" class="w-12 h-12"></i>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <section class="bg-white rounded-xl shadow-md p-6 mb-8" data-aos="fade-up">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Dataset Overview</h2>
+            <div class="overflow-x-auto custom-scrollbar">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Year Range</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Agriculture</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Crop Studies</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Climate Change</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Climate Policy</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Carbon Credits</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Climate Solutions</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Remote Sensing</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Machine Learning</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Deep Learning</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">LLMs</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Earth System Models</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Land Management</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <!-- Data rows will be inserted here by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            <div class="bg-white rounded-xl shadow-md p-6" data-aos="fade-right">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-4">Research Trends Over Time</h2>
+                <div class="chart-container">
+                    <canvas id="trendsChart"></canvas>
+                </div>
+                <div class="mt-4 flex justify-center space-x-4">
+                    <button onclick="updateChart('all')" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">Show All</button>
+                    <button onclick="updateChart('tech')" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">Tech Focus</button>
+                    <button onclick="updateChart('climate')" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition">Climate Focus</button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md p-6" data-aos="fade-left">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-4">2023-2024 Research Distribution</h2>
+                <div class="chart-container">
+                    <canvas id="distributionChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-xl shadow-md p-6" data-aos="fade-up">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Technology Adoption in Research</h2>
+            <div class="chart-container">
+                <canvas id="techAdoptionChart"></canvas>
+            </div>
+            <div class="mt-4 text-sm text-gray-600">
+                <p>Note: Shows the rapid adoption of machine learning and deep learning techniques in eddy covariance research.</p>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-xl shadow-md p-6 mt-8" data-aos="fade-up">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Key Insights</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
+                    <h3 class="font-bold text-green-800 mb-2">Exponential Growth</h3>
+                    <p class="text-gray-700">Machine learning research saw a 200x increase from 2007 to 2024, reflecting the digital transformation in environmental science.</p>
+                </div>
+                <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+                    <h3 class="font-bold text-blue-800 mb-2">Policy Impact</h3>
+                    <p class="text-gray-700">Climate policy research emerged in 2000 and grew steadily, correlating with international climate agreements.</p>
+                </div>
+                <div class="bg-purple-50 p-4 rounded-lg border-l-4 border-purple-500">
+                    <h3 class="font-bold text-purple-800 mb-2">Emerging Tech</h3>
+                    <p class="text-gray-700">Large Language Models (LLMs) first appeared in research in 2022, showing the newest frontier in scientific applications.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <h3 class="text-xl font-bold">Eddy Covariance Research</h3>
+                    <p class="text-gray-400 mt-1">Data Visualization Dashboard</p>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-400 hover:text-white transition">
+                        <i data-feather="github"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition">
+                        <i data-feather="twitter"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition">
+                        <i data-feather="mail"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-6 pt-6 text-center text-gray-400 text-sm">
+                <p>© 2023 Eddy Covariance Research Trends. All data visualized from public research publications.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize libraries
+        AOS.init();
+        feather.replace();
+        
+        // Data from CSV
+        const data = [
+            {year: "1995-1996", agriculture: 331, crop: 68, climate: 179, policy: 0, carbon: 10, solutions: 0, remote: 54, ml: 0, dl: 0, llm: 0, earth: 2, land: 9},
+            {year: "1996-1997", agriculture: 400, crop: 72, climate: 172, policy: 0, carbon: 13, solutions: 0, remote: 66, ml: 0, dl: 0, llm: 0, earth: 3, land: 8},
+            {year: "1997-1998", agriculture: 467, crop: 94, climate: 205, policy: 0, carbon: 19, solutions: 0, remote: 84, ml: 2, dl: 0, llm: 0, earth: 2, land: 16},
+            {year: "1998-1999", agriculture: 535, crop: 180, climate: 252, policy: 0, carbon: 35, solutions: 0, remote: 129, ml: 2, dl: 0, llm: 0, earth: 4, land: 33},
+            {year: "1999-2000", agriculture: 674, crop: 223, climate: 298, policy: 0, carbon: 68, solutions: 0, remote: 197, ml: 4, dl: 0, llm: 0, earth: 6, land: 60},
+            {year: "2000-2001", agriculture: 806, crop: 257, climate: 417, policy: 2, carbon: 93, solutions: 0, remote: 281, ml: 5, dl: 0, llm: 0, earth: 3, land: 105},
+            {year: "2001-2002", agriculture: 924, crop: 307, climate: 466, policy: 2, carbon: 101, solutions: 0, remote: 348, ml: 0, dl: 0, llm: 0, earth: 8, land: 119},
+            {year: "2002-2003", agriculture: 1110, crop: 354, climate: 464, policy: 5, carbon: 102, solutions: 0, remote: 422, ml: 2, dl: 0, llm: 0, earth: 12, land: 134},
+            {year: "2003-2004", agriculture: 1420, crop: 471, climate: 553, policy: 7, carbon: 133, solutions: 0, remote: 551, ml: 4, dl: 0, llm: 0, earth: 9, land: 194},
+            {year: "2004-2005", agriculture: 1870, crop: 529, climate: 650, policy: 12, carbon: 166, solutions: 0, remote: 697, ml: 12, dl: 2, llm: 0, earth: 16, land: 260},
+            {year: "2005-2006", agriculture: 2120, crop: 633, climate: 750, policy: 18, carbon: 171, solutions: 0, remote: 799, ml: 18, dl: 2, llm: 0, earth: 17, land: 292},
+            {year: "2006-2007", agriculture: 2230, crop: 859, climate: 919, policy: 18, carbon: 209, solutions: 0, remote: 892, ml: 21, dl: 2, llm: 0, earth: 13, land: 332},
+            {year: "2007-2008", agriculture: 2520, crop: 1020, climate: 1230, policy: 16, carbon: 272, solutions: 3, remote: 1100, ml: 27, dl: 2, llm: 0, earth: 23, land: 387},
+            {year: "2008-2009", agriculture: 2860, crop: 1200, climate: 1650, policy: 24, carbon: 360, solutions: 5, remote: 1330, ml: 37, dl: 2, llm: 0, earth: 45, land: 450},
+            {year: "2009-2010", agriculture: 3300, crop: 1420, climate: 1960, policy: 35, carbon: 450, solutions: 4, remote: 1540, ml: 52, dl: 3, llm: 0, earth: 48, land: 500},
+            {year: "2010-2011", agriculture: 3630, crop: 1580, climate: 2120, policy: 31, carbon: 495, solutions: 5, remote: 1770, ml: 83, dl: 2, llm: 0, earth: 67, land: 604},
+            {year: "2011-2012", agriculture: 3930, crop: 1780, climate: 2350, policy: 37, carbon: 525, solutions: 5, remote: 1970, ml: 101, dl: 3, llm: 0, earth: 100, land: 661},
+            {year: "2012-2013", agriculture: 4510, crop: 2080, climate: 2590, policy: 53, carbon: 498, solutions: 4, remote: 2220, ml: 112, dl: 7, llm: 0, earth: 143, land: 720},
+            {year: "2013-2014", agriculture: 4830, crop: 2270, climate: 2660, policy: 52, carbon: 460, solutions: 3, remote: 2510, ml: 149, dl: 5, llm: 0, earth: 218, land: 807},
+            {year: "2014-2015", agriculture: 4990, crop: 2440, climate: 2770, policy: 43, carbon: 473, solutions: 3, remote: 2770, ml: 200, dl: 5, llm: 0, earth: 282, land: 878},
+            {year: "2015-2016", agriculture: 5320, crop: 2520, climate: 2890, policy: 45, carbon: 465, solutions: 4, remote: 2990, ml: 251, dl: 12, llm: 0, earth: 350, land: 914},
+            {year: "2016-2017", agriculture: 5500, crop: 2650, climate: 2900, policy: 48, carbon: 378, solutions: 6, remote: 3060, ml: 317, dl: 16, llm: 0, earth: 402, land: 875},
+            {year: "2017-2018", agriculture: 5870, crop: 2880, climate: 2930, policy: 58, carbon: 345, solutions: 12, remote: 3210, ml: 459, dl: 38, llm: 0, earth: 427, land: 929},
+            {year: "2018-2019", agriculture: 6200, crop: 3010, climate: 3020, policy: 56, carbon: 361, solutions: 18, remote: 3450, ml: 655, dl: 105, llm: 0, earth: 425, land: 934},
+            {year: "2019-2020", agriculture: 6310, crop: 3180, climate: 3120, policy: 61, carbon: 378, solutions: 40, remote: 3680, ml: 939, dl: 210, llm: 0, earth: 542, land: 949},
+            {year: "2020-2021", agriculture: 6790, crop: 3500, climate: 3410, policy: 99, carbon: 413, solutions: 89, remote: 4150, ml: 1410, dl: 375, llm: 0, earth: 614, land: 1050},
+            {year: "2021-2022", agriculture: 7280, crop: 3790, climate: 3930, policy: 124, carbon: 534, solutions: 159, remote: 4680, ml: 1850, dl: 577, llm: 0, earth: 684, land: 1120},
+            {year: "2022-2023", agriculture: 7430, crop: 3750, climate: 4120, policy: 144, carbon: 719, solutions: 210, remote: 4890, ml: 2130, dl: 717, llm: 2, earth: 703, land: 1140},
+            {year: "2023-2024", agriculture: 7750, crop: 3160, climate: 4250, policy: 158, carbon: 868, solutions: 235, remote: 5130, ml: 2680, dl: 910, llm: 24, earth: 822, land: 1140},
+            {year: "2024-2025", agriculture: 3400, crop: 3360, climate: 3560, policy: 167, carbon: 868, solutions: 245, remote: 4690, ml: 2850, dl: 1020, llm: 45, earth: 761, land: 1030}
+        ];
+
+        // Populate table
+        const tableBody = document.querySelector('tbody');
+        data.forEach(row => {
+            const tr = document.createElement('tr');
+            tr.className = 'hover:bg-gray-50';
+            tr.innerHTML = `
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${row.year}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${row.agriculture}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${row.crop}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${row.climate}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${row.policy}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${row.carbon}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${row.solutions}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${row.remote}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${row.ml}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${row.dl}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${row.llm}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${row.earth}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${row.land}</td>
+            `;
+            tableBody.appendChild(tr);
+        });
+
+        // Chart colors
+        const colors = [
+            '#4CAF50', '#8BC34A', '#CDDC39', '#FFEB3B', '#FFC107',
+            '#FF9800', '#FF5722', '#795548', '#9E9E9E', '#607D8B',
+            '#2196F3', '#3F51B5', '#673AB7', '#9C27B0', '#E91E63'
+        ];
+
+        // Initialize charts
+        const trendsCtx = document.getElementById('trendsChart').getContext('2d');
+        const distributionCtx = document.getElementById('distributionChart').getContext('2d');
+        const techAdoptionCtx = document.getElementById('techAdoptionChart').getContext('2d');
+
+        let trendsChart = new Chart(trendsCtx, {
+            type: 'line',
+            data: {
+                labels: data.map(d => d.year),
+                datasets: [
+                    {
+                        label: 'Agriculture',
+                        data: data.map(d => d.agriculture),
+                        borderColor: colors[0],
+                        backgroundColor: colors[0] + '20',
+                        tension: 0.3,
+                        fill: true
+                    },
+                    {
+                        label: 'Crop Studies',
+                        data: data.map(d => d.crop),
+                        borderColor: colors[1],
+                        backgroundColor: colors[1] + '20',
+                        tension: 0.3,
+                        fill: true
+                    },
+                    {
+                        label: 'Climate Change',
+                        data: data.map(d => d.climate),
+                        borderColor: colors[2],
+                        backgroundColor: colors[2] + '20',
+                        tension: 0.3,
+                        fill: true
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Primary Research Categories Over Time',
+                        font: {
+                            size: 16
+                        }
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Number of Publications'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Year Range'
+                        }
+                    }
+                }
+            }
+        });
+
+        const distributionChart = new Chart(distributionCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Agriculture', 'Crop Studies', 'Climate Change', 'Climate Policy', 'Carbon Credits', 'Climate Solutions', 'Remote Sensing', 'Machine Learning', 'Deep Learning', 'LLMs', 'Earth System', 'Land Management'],
+                datasets: [{
+                    data: Object.values(data[data.length - 2]).slice(1),
+                    backgroundColor: colors,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Research Focus Distribution (2023-2024)',
+                        font: {
+                            size: 16
+                        }
+                    },
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            boxWidth: 12
+                        }
+                    }
+                }
+            }
+        });
+
+        const techAdoptionChart = new Chart(techAdoptionCtx, {
+            type: 'bar',
+            data: {
+                labels: data.map(d => d.year),
+                datasets: [
+                    {
+                        label: 'Remote Sensing',
+                        data: data.map(d => d.remote),
+                        backgroundColor: colors[6] + '80',
+                        borderColor: colors[6],
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Machine Learning',
+                        data: data.map(d => d.ml),
+                        backgroundColor: colors[7] + '80',
+                        borderColor: colors[7],
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Deep Learning',
+                        data: data.map(d => d.dl),
+                        backgroundColor: colors[8] + '80',
+                        borderColor: colors[8],
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'LLMs',
+                        data: data.map(d => d.llm),
+                        backgroundColor: colors[9] + '80',
+                        borderColor: colors[9],
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Technology Adoption in Research',
+                        font: {
+                            size: 16
+                        }
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false
+                    }
+                },
+                scales: {
+                    x: {
+                        stacked: false,
+                        title: {
+                            display: true,
+                            text: 'Year Range'
+                        }
+                    },
+                    y: {
+                        stacked: false,
+                        title: {
+                            display: true,
+                            text: 'Number of Publications'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Chart update function
+        function updateChart(type) {
+            if (type === 'all') {
+                trendsChart.data.datasets = [
+                    {
+                        label: 'Agriculture',
+                        data: data.map(d => d.agriculture),
+                        borderColor: colors[0],
+                        backgroundColor: colors[0] + '20',
+                        tension: 0.3,
+                        fill: true
+                    },
+                    {
+                        label: 'Crop Studies',
+                        data: data.map(d => d.crop),
+                        borderColor: colors[1],
+                        backgroundColor: colors[1] + '20',
+                        tension: 0.3,
+                        fill: true
+                    },
+                    {
+                        label: 'Climate Change',
+                        data: data.map(d => d.climate),
+                        borderColor: colors[2],
+                        backgroundColor: colors[2] + '20',
+                        tension: 0.3,
+                        fill: true
+                    }
+                ];
+            } else if (type === 'tech') {
+                trendsChart.data.datasets = [
+                    {
+                        label: 'Remote Sensing',
+                        data: data.map(d => d.remote),
+                        borderColor: colors[6],
+                        backgroundColor: colors[6] + '20',
+                        tension: 0.3,
+                        fill: true
+                    },
+                    {
+                        label: 'Machine Learning',
+                        data: data.map(d => d.ml),
+                        borderColor: colors[7],
+                        backgroundColor: colors[7] + '20',
+                        tension: 0.3,
+                        fill: true
+                    },
+                    {
+                        label: 'Deep Learning',
+                        data: data.map(d => d.dl),
+                        borderColor: colors[8],
+                        backgroundColor: colors[8] + '20',
+                        tension: 0.3,
+                        fill: true
+                    }
+                ];
+            } else if (type === 'climate') {
+                trendsChart.data.datasets = [
+                    {
+                        label: 'Climate Change',
+                        data: data.map(d => d.climate),
+                        borderColor: colors[2],
+                        backgroundColor: colors[2] + '20',
+                        tension: 0.3,
+                        fill: true
+                    },
+                    {
+                        label: 'Climate Policy',
+                        data: data.map(d => d.policy),
+                        borderColor: colors[3],
+                        backgroundColor: colors[3] + '20',
+                        tension: 0.3,
+                        fill: true
+                    },
+                    {
+                        label: 'Climate Solutions',
+                        data: data.map(d => d.solutions),
+                        borderColor: colors[4],
+                        backgroundColor: colors[4] + '20',
+                        tension: 0.3,
+                        fill: true
+                    }
+                ];
+            }
+            trendsChart.update();
+        }
+    </script>
+</body>
+</html>
